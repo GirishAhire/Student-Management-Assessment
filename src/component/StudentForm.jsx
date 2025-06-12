@@ -48,6 +48,9 @@ const StudentForm = ({ onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        
+
+
         const newStudent = {
             ...student,
             id: Date.now(),
@@ -66,7 +69,7 @@ const StudentForm = ({ onSubmit }) => {
     };
 
     return (
-        <div className="bg-[#374151] p-6 rounded-2xl shadow-md w-full max-w-lg mx-auto">
+        <div className="dark:bg-gray-800 p-6 rounded-2xl shadow-md w-full max-w-lg mx-auto">
             <form onSubmit={handleSubmit} className="space-y-4 text-white">
                 <h2 className="text-2xl font-bold text-center mb-2">Enter Student Record:</h2>
 
@@ -75,7 +78,6 @@ const StudentForm = ({ onSubmit }) => {
                 <input
                     type="text"
                     name="name"
-                    placeholder="Full Name"
                     value={student.name}
                     onChange={handleChange}
                     className="w-full px-4 py-2 rounded-md bg-white/10 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,7 +88,6 @@ const StudentForm = ({ onSubmit }) => {
                 <input
                     type="number"
                     name="age"
-                    placeholder="Age"
                     value={student.age}
                     onChange={handleChange}
                     min="5"
