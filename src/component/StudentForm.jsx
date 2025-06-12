@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const StudentForm = ({ onSubmit }) => {
+const StudentForm = ({ onSubmit, editData }) => {
 
     const studentData = {
         name: "",
@@ -10,9 +10,18 @@ const StudentForm = ({ onSubmit }) => {
         mark3: "",
         mark4: "",
         mark5: "",
-    }
+    };
 
     const [student, setStudent] = useState(studentData);
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    useEffect(() => {
+
+        if (editData) {
+            setStudent(editData);
+            setIsEditMode(true);
+        }
+    }, [editData]);
 
     const handleChange = (event) => {
 
@@ -23,7 +32,6 @@ const StudentForm = ({ onSubmit }) => {
     };
 
     const marks = [
-
         Number(student.mark1),
         Number(student.mark2),
         Number(student.mark3),
@@ -31,8 +39,10 @@ const StudentForm = ({ onSubmit }) => {
         Number(student.mark5),
     ];
 
-    const totalMarks = marks.filter(m => !isNaN(m)).length;
+    const totalMarks = marks.filter((m) => !isNaN(m)).length;
+
     const total = marks.reduce((sum, mark) => sum + (isNaN(mark) ? 0 : mark), 0);
+
     const percentage = totalMarks === 5 ? (total / 5).toFixed(2) : "";
 
     let division = "";
@@ -48,30 +58,30 @@ const StudentForm = ({ onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        
-
-
         const newStudent = {
             ...student,
-            id: Date.now(),
+            id: isEditMode ? student.id : Date.now(),
             percentage,
             division,
         };
-
-        console.log(newStudent);
 
         onSubmit(newStudent);
         handleClear();
     };
 
     const handleClear = () => {
-        setStudent(studentData)
+        setStudent(studentData);
+        setIsEditMode(false);
     };
 
     return (
-        <div className="dark:bg-gray-800 p-6 rounded-2xl shadow-md w-full max-w-lg mx-auto">
+        <div className="dark:bg-gray-800 p-6 rounded-2xl shadow-md w-full max-w-lg mx-auto ">
+
             <form onSubmit={handleSubmit} className="space-y-4 text-white">
-                <h2 className="text-2xl font-bold text-center mb-2">Enter Student Record:</h2>
+
+                <h2 className="text-3xl font-bold text-center mb-6">
+                    Enter Student Record:
+                </h2>
 
                 <label>Student Name:</label>
 
@@ -85,6 +95,7 @@ const StudentForm = ({ onSubmit }) => {
                 />
 
                 <label>Student Age:</label>
+
                 <input
                     type="number"
                     name="age"
@@ -97,10 +108,9 @@ const StudentForm = ({ onSubmit }) => {
                 />
 
                 {[1, 2, 3, 4, 5].map((i) => (
+
                     <div key={i}>
-
                         <label>Mark {i}:</label>
-
                         <input
                             type="number"
                             name={`mark${i}`}
